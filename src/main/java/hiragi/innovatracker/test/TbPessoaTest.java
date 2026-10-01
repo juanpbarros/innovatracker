@@ -54,6 +54,10 @@ public class TbPessoaTest {
                 LocalDate.parse(leitor.nextLine())
         );
 
+        System.out.print("Pessoa está ativa? (true/false): ");
+        pessoa.setFlgAtivoPessoa(leitor.nextBoolean());
+        leitor.nextLine();
+
         // 3. Salvar
         pessoaRep.save(pessoa);
 
@@ -67,10 +71,11 @@ public class TbPessoaTest {
 
         pessoaRep.findAll().forEach(p ->
                 System.out.printf(
-                        "ID: %d | Nome: %s | E-mail: %s%n",
+                        "ID: %d | Nome: %s | E-mail: %s | Ativo: %s%n",
                         p.getIdtPessoa(),
                         p.getNmePessoa(),
-                        p.getEmlPessoa()
+                        p.getEmlPessoa(),
+                        p.getFlgAtivoPessoa()
                 )
         );
     }
