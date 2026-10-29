@@ -20,18 +20,14 @@ public class TdCategoriaTest {
         TdCategoria tdCategoria = new TdCategoria();
         System.out.println("\n--- Inclusão de Categoria ---");
 
-
         System.out.print("Sigla: ");
         tdCategoria.setSglCategoria(leitor.nextLine());
-
 
         System.out.print("Nome: ");
         tdCategoria.setNmeCategoria(leitor.nextLine());
 
-
         System.out.print("Descrição: ");
         tdCategoria.setDscCategoria(leitor.nextLine());
-
 
         // 2. Salva no banco via Spring Data JPA
         rep.save(tdCategoria);
@@ -42,8 +38,21 @@ public class TdCategoriaTest {
     private static void consultar(TdCategoriaRepository rep, Scanner leitor) {
         System.out.println("\n--- Lista de Categorias ---");
         rep.findAll().forEach(c ->
-                System.out.printf("ID: %d | Sigla: %s | Nome: %s%n",
-                        c.getIdtCategoria(), c.getSglCategoria(), c.getNmeCategoria())
+                System.out.printf("ID: %d | Sigla: %s | Nome: %s | Descrição: %s%n",
+                        c.getIdtCategoria(), c.getSglCategoria(), c.getNmeCategoria(),
+                        c.getDscCategoria())
+        );
+    }
+
+    private static void consultarNme(TdCategoriaRepository rep, Scanner leitor) {
+        System.out.println("\n--- Consultar por Nome de Categorias ---");
+        System.out.print("Nome: ");
+        String nome = leitor.nextLine();
+        rep.findByNmeCategoriaContainingIgnoreCaseOrderByNmeCategoriaAsc(nome)
+                .forEach(c ->
+                System.out.printf("ID: %d | Sigla: %s | Nome: %s | Descrição: %s%n",
+                        c.getIdtCategoria(), c.getSglCategoria(), c.getNmeCategoria(),
+                        c.getDscCategoria())
         );
     }
 
@@ -64,7 +73,6 @@ public class TdCategoriaTest {
 
 
     public static void main(String[] args) {
-
 
         try (ConfigurableApplicationContext ctx = new SpringApplicationBuilder(InnovatrackerApplication.class)
                 .web(WebApplicationType.NONE)
@@ -87,7 +95,8 @@ public class TdCategoriaTest {
                        1 - Incluir
                        2 - Consultar
                        3 - Excluir
-                       4 - Sair
+                       4 - Consulta por Nome
+                       5 - Sair
                       
                        Qual a opção?
                        """);
@@ -96,12 +105,12 @@ public class TdCategoriaTest {
                 int opcao = leitor.nextInt();
                 leitor.nextLine(); // Limpa o buffer do Enter após ler o int
 
-
                 switch (opcao) {
                     case 1 -> incluir(rep, leitor);
                     case 2 -> consultar(rep, leitor);
                     case 3 -> excluir(rep, leitor);
-                    case 4 -> sair = true;
+                    case 4 -> consultarNme(rep, leitor);
+                    case 5 -> sair = true;
                     default -> System.out.println("Opção inválida!");
                 }
             }

@@ -138,7 +138,6 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<<<<<<< HEAD
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -147,8 +146,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-=======
->>>>>>> 06230feacb27363bdb9e82560c8a0c1f76ee0053
 	</dependencies>
 
 
