@@ -5,10 +5,10 @@ import hiragi.innovatracker.dto.PessoaResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ooxml.POIXMLProperties;
 import org.apache.poi.xwpf.usermodel.*;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageMar;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.springframework.stereotype.Service;
-
-
+import org.apache.poi.wp.usermodel.HeaderFooterType;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -73,20 +73,27 @@ public class RelatorioPessoaWordService {
     // =========================================================================
     // FUNÇÕES ESPECIALISTAS DE ESTRUTURAÇÃO DO DOCUMENTO
     // =========================================================================
-
-
     private void configurarMargens(XWPFDocument document) {
+        // 1. Obtém ou cria a seção de propriedades do documento (CTSectPr)
         CTSectPr sectPr = document.getDocument().getBody().isSetSectPr()
                 ? document.getDocument().getBody().getSectPr()
                 : document.getDocument().getBody().addNewSectPr();
-        CTPageMar pageMar = sectPr.isSetPageMar() ? sectPr.getPageMar() : sectPr.addNewPageMar();
 
 
-        // Configura 2,54 cm (1440 dxa) de margem em todos os lados
-        pageMar.setLeft(BigInteger.valueOf(1440));
-        pageMar.setRight(BigInteger.valueOf(1440));
-        pageMar.setTop(BigInteger.valueOf(1440));
-        pageMar.setBottom(BigInteger.valueOf(1440));
+        // 2. Obtém ou cria a tag de margens da página (CTPageMar)
+        CTPageMar pageMar = sectPr.isSetPgMar()
+                ? sectPr.getPgMar()
+                : sectPr.addNewPgMar();
+
+
+        // 3. Define as margens em dxa (1440 dxa = 1 polegada = ~2.54 cm)
+        BigInteger marginValue = BigInteger.valueOf(1440);
+
+
+        pageMar.setLeft(marginValue);
+        pageMar.setRight(marginValue);
+        pageMar.setTop(marginValue);
+        pageMar.setBottom(marginValue);
     }
 
 
@@ -94,7 +101,7 @@ public class RelatorioPessoaWordService {
         POIXMLProperties.CoreProperties properties = document.getProperties().getCoreProperties();
         properties.setTitle(titulo);
         properties.setCreator("InnovaTracker - Sistema de Gestão");
-        properties.setSubject("Relatório de Cadastro de Pessoas");
+        properties.setSubjectProperty("Relatório de Cadastro de Pessoas"); // Método atualizado
     }
 
 
