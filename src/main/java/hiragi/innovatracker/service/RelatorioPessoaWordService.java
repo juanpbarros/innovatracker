@@ -221,12 +221,12 @@ public class RelatorioPessoaWordService {
         }
 
 
-        XWPFTable table = document.createTable(pessoas.size() + 1, 6);
+        XWPFTable table = document.createTable(pessoas.size() + 1, 7);
         table.setWidth("100%");
 
 
-        int[] colWidths = {800, 2400, 2400, 1800, 1200, 1000};
-        String[] headers = {"ID", "Nome Completo", "E-mail", "Departamento", "Nascimento", "Status"};
+        int[] colWidths = {800, 2400, 2400, 1800, 1200, 1000, 1800};
+        String[] headers = {"ID", "Nome Completo", "E-mail", "Departamento", "Nascimento", "Status", "Criação"};
 
 
         construirCabecalhoTabela(table.getRow(0), headers, colWidths);
@@ -285,7 +285,8 @@ public class RelatorioPessoaWordService {
                 p.emlPessoa() != null ? p.emlPessoa() : "-",
                 p.nmeDepartamento() != null ? p.nmeDepartamento() : "Sem Depto",
                 p.dtaNascimentoPessoa() != null ? p.dtaNascimentoPessoa().format(DATE_FORMATTER) : "-",
-                Boolean.TRUE.equals(p.flgAtivoPessoa()) ? "ATIVO" : "INATIVO"
+                Boolean.TRUE.equals(p.flgAtivoPessoa()) ? "ATIVO" : "INATIVO",
+                p.dttCriacaoPessoa() != null ? p.dttCriacaoPessoa().format(DATE_FORMATTER) : "-",
         };
 
 
@@ -319,6 +320,6 @@ public class RelatorioPessoaWordService {
 
 
     private boolean isColunaCentralizada(int indexColuna) {
-        return indexColuna == 0 || indexColuna == 4 || indexColuna == 5;
+        return indexColuna == 0 || indexColuna == 4 || indexColuna == 5 || indexColuna == 6;
     }
 }
